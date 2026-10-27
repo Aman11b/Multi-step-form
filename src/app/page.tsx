@@ -1,8 +1,11 @@
+import FormLayout from "@/components/layout/FormLayout";
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <h1>Multi-step Form</h1>
-      <p>Project steup is ready.</p>
-    </main>
+    <FormLayout>
+      <h1 className="text-2xl font-bold">Multi-step Form</h1>
+      <p className="mt-2 text-gray-500">
+        Your form will be built here, one step at a time.
+      </p>
+    </FormLayout>
   );
 }
