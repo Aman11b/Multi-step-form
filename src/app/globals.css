@@ -29,3 +29,16 @@ body {
   font-family: var(--font-ubuntu), sans-serif;
   font-size: 16px;
 }
+
+@layer components {
+  .personal-info-input {
+    @apply bg-white px-4 py-3 border border-purple-200 focus:border-purple-600 rounded-md outline-none w-full text-blue-950 placeholder:text-gray-500 text-base;
+  }
+  .personal-info-label {
+    @apply block font-medium text-blue-950 text-sm;
+  }
+
+  .personal-info-input-error {
+    @apply border-red-500 focus:border-red-500;
+  }
+}

@@ -7,8 +7,8 @@ const steps = [
 
 export default function StepSidebar() {
   return (
-    <aside className="relative min-h-43 overflow-hidden rounded-lg bg-cover bg-center bg-no-repeat px-6 py-8 md:min-h-142 md:px-8 bg-[url('/images/bg-sidebar-mobile.svg')] md:bg-[url('/images/bg-sidebar-desktop.svg')]  ">
-      <ol className="relative z-10 flex justify-center gap-4 md:flex-col md:gap-8">
+    <aside className="relative bg-[url('/images/bg-sidebar-mobile.svg')] md:bg-[url('/images/bg-sidebar-desktop.svg')] bg-cover bg-no-repeat bg-center px-6 md:px-8 py-8 rounded-lg min-h-43 md:min-h-142 overflow-hidden">
+      <ol className="z-10 relative flex md:flex-col justify-center gap-4 md:gap-8">
         {steps.map((step) => (
           <li key={step.number} className="flex items-center gap-4">
             <span
@@ -17,8 +17,8 @@ export default function StepSidebar() {
               {step.number}
             </span>
             <div className="hidden md:block">
-              <p className="text-xs text-blue-200">STEP {step.number}</p>
-              <span className="mt-1 block text-sm font-bold tracking-wider text-white">
+              <p className="text-blue-200 text-xs">STEP {step.number}</p>
+              <span className="block mt-1 font-bold text-white text-sm tracking-wider">
                 {step.label}
               </span>
             </div>
