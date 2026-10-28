@@ -32,7 +32,7 @@ body {
 
 @layer components {
   .personal-info-input {
-    @apply bg-white px-4 py-3 border border-purple-200 focus:border-purple-600 rounded-md outline-none w-full text-blue-950 placeholder:text-gray-500 text-base;
+    @apply bg-white px-4 py-3 border border-purple-200 focus:border-purple-600 rounded-md outline-none w-full text-blue-950 placeholder:text-gray-500 text-base hover:cursor-pointer;
   }
   .personal-info-label {
     @apply block font-medium text-blue-950 text-sm;

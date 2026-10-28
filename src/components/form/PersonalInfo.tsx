@@ -1,6 +1,28 @@
+"use client";
+
+import { useState } from "react";
+import type { SubmitEvent } from "react";
+import Button from "../ui/Button";
+import FormField from "../ui/FormField";
+import { PersonalInfoData, PersonalInfoError } from "@/types/personal-info";
+import { validatePersonalInfo } from "@/lib/personal-info-validation";
+
 export default function PersonalInfo() {
+  const [formData, setFormData] = useState<PersonalInfoData>({
+    name: "",
+    email: "",
+    phone: "",
+  });
+  const [error, setError] = useState<PersonalInfoError>({});
+
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const validationError = validatePersonalInfo(formData);
+    setError(validationError);
+  }
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h1 className="font-bold text-blue-950 text-2xl md:text-3xl">
         Personal info
       </h1>
@@ -9,58 +31,57 @@ export default function PersonalInfo() {
       </p>
 
       <div className="space-y-5 mt-6">
-        <div className="space-y-2">
-          <label
-            htmlFor="name"
-            className="block font-medium text-blue-950 text-sm"
-          >
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="e.g Stephan King"
-            className="personal-info-input personal-info-input-error"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="email"
-            className="block font-medium text-blue-950 text-sm"
-          >
-            Email Address
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="e.g StephanKing@lorem.com"
-            className="personal-info-input personal-info-input-error"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="phone"
-            className="block font-medium text-blue-950 text-sm"
-          >
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            placeholder="e.g +1 234 567 890"
-            className="personal-info-input personal-info-input-error"
-          />
-        </div>
+        <FormField
+          label="Name"
+          error={error.name}
+          inputProps={{
+            id: "name",
+            name: "name",
+            type: "text",
+            placeholder: "e.g Stephen King",
+            value: formData.name,
+            onChange: (event) =>
+              setFormData((current) => ({
+                ...current,
+                name: event.target.value,
+              })),
+          }}
+        />
+        <FormField
+          label="Email Address"
+          error={error.email}
+          inputProps={{
+            type: "email",
+            id: "email",
+            name: "email",
+            placeholder: "e.g StephanKing@lorem.com",
+            value: formData.email,
+            onChange: (event) =>
+              setFormData((current) => ({
+                ...current,
+                email: event.target.value,
+              })),
+          }}
+        />
+        <FormField
+          label="Phone Number"
+          error={error.phone}
+          inputProps={{
+            type: "tel",
+            id: "phone",
+            name: "phone",
+            placeholder: "e.g +1 234 567 890",
+            value: formData.phone,
+            onChange: (event) =>
+              setFormData((current) => ({
+                ...current,
+                phone: event.target.value,
+              })),
+          }}
+        />
+        {/* Mentor takeaway: ...props forwards every remaining prop, including children. Explicitly rendering {children} is generally clearer when building reusable UI components. */}
         <div className="flex justify-end mt-20">
-          <button
-            type="submit"
-            className="bg-blue-950 hover:opacity-90 px-5 py-3 rounded-md focus-visible:outline-2 focus-visible:outline-purple-600 focus-visible:outline-offset-2 font-medium text-white text-sm"
-          >
-            Next Step
-          </button>
+          <Button type="submit">Next Step</Button>
         </div>
       </div>
     </form>
