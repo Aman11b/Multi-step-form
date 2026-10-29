@@ -1,18 +1,24 @@
 "use client";
 
 import { validatePersonalInfo } from "@/lib/personal-info-validation";
+import { FIRST_STEP } from "@/lib/steps";
 import { PersonalInfoData, PersonalInfoError } from "@/types/personal-info";
 import type { ChangeEvent, SubmitEvent } from "react";
 import { useState } from "react";
-import Button from "../ui/Button";
 import FormField from "../ui/FormField";
+import StepForm from "./StepForm";
 
-export default function PersonalInfo() {
-  const [formData, setFormData] = useState<PersonalInfoData>({
-    name: "",
-    email: "",
-    phone: "",
-  });
+type PersonalInfoProps={
+  initialValues?:PersonalInfoData
+  onSubmit?:(data:PersonalInfoData)=>void
+}
+
+export default function PersonalInfo({
+  initialValues={name:"",email:"",phone:""},
+  onSubmit
+}:PersonalInfoProps) {
+
+  const [formData,setFormData]=useState<PersonalInfoData>(initialValues)
   const [error, setError] = useState<PersonalInfoError>({});
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
@@ -20,6 +26,14 @@ export default function PersonalInfo() {
 
     const validationError = validatePersonalInfo(formData);
     setError(validationError);
+
+    if(Object.keys(validationError).length===0){
+      onSubmit?.({
+        name:formData.name.trim(),
+        email:formData.email.trim(),
+        phone:formData.phone.trim()
+      })
+    }
   }
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -35,15 +49,8 @@ export default function PersonalInfo() {
     });
   }
   return (
-    <form onSubmit={handleSubmit}>
-      <h1 className="font-bold text-blue-950 text-2xl md:text-3xl">
-        Personal info
-      </h1>
-      <p className="mt-3 text-gray-500 text-base leading-6">
-        Please provide your name, email address, and phone number.
-      </p>
-
-      <div className="space-y-5 mt-6">
+    <StepForm step={FIRST_STEP} onSubmit={handleSubmit}>
+      <div className="space-y-5">
         <FormField
           label="Name"
           error={error.name}
@@ -80,11 +87,8 @@ export default function PersonalInfo() {
             onChange: handleChange,
           }}
         />
-        {/* Mentor takeaway: ...props forwards every remaining prop, including children. Explicitly rendering {children} is generally clearer when building reusable UI components. */}
-        <div className="flex justify-end mt-20">
-          <Button type="submit">Next Step</Button>
-        </div>
       </div>
-    </form>
+    </StepForm>
+
   );
 }

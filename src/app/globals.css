@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-:root {
+@theme {
   --color-blue-950: hsl(213 96% 18%);
   --color-purple-600: hsl(243 100% 62%);
   --color-blue-300: hsl(228 100% 84%);
@@ -18,27 +18,18 @@
   --font-sans: var(--font-ubuntu);
 }
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: var(--color-blue-100);
-  color: var(--color-blue-950);
-  font-family: var(--font-ubuntu), sans-serif;
-  font-size: 16px;
+@layer base {
+  body {
+    @apply bg-blue-100 text-blue-950 text-base;
+  }
 }
 
 @layer components {
-  .personal-info-input {
-    @apply bg-white px-4 py-3 border border-purple-200 focus:border-purple-600 rounded-md outline-none w-full text-blue-950 placeholder:text-gray-500 text-base hover:cursor-pointer;
-  }
-  .personal-info-label {
-    @apply block font-medium text-blue-950 text-sm;
+  .form-input {
+    @apply bg-white px-4 py-3 border border-purple-200 focus:border-purple-600 rounded-md outline-none w-full text-blue-950 placeholder:text-grey-500 text-base;
   }
 
-  .personal-info-input-error {
+  .form-input-error {
     @apply border-red-500 focus:border-red-500;
   }
 }

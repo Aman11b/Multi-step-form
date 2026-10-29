@@ -11,7 +11,7 @@ export default function Input({
 }: InputProps) {
   return (
     <input
-      className={`personal-info-input ${hasError ? "personal-info-input-error" : ""} ${className}`}
+    className={`form-input ${hasError ? "form-input-error" : ""} ${className}`}
       {...props}
     />
   );

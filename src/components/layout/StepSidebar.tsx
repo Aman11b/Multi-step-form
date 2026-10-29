@@ -5,14 +5,21 @@ const steps = [
   { number: 4, label: "SUMMARY" },
 ];
 
-export default function StepSidebar() {
+type StepSidebarProps={
+  currentStep:number
+}
+
+export default function StepSidebar({currentStep}:StepSidebarProps) {
+  const activeStep=Math.min(currentStep,steps.length)
   return (
     <aside className="relative bg-[url('/images/bg-sidebar-mobile.svg')] md:bg-[url('/images/bg-sidebar-desktop.svg')] bg-cover bg-no-repeat bg-center px-6 md:px-8 py-8 rounded-lg min-h-43 md:min-h-142 overflow-hidden">
       <ol className="z-10 relative flex md:flex-col justify-center gap-4 md:gap-8">
         {steps.map((step) => (
-          <li key={step.number} className="flex items-center gap-4">
+          <li key={step.number} 
+          aria-current={step.number===activeStep ? "step":undefined}
+          className="flex items-center gap-4">
             <span
-              className={`flex size-9 shrink-0 items-center justify-center rounded-full border text-sm font-bold ${step.number === 1 ? "border-blue-200 bg-blue-200 text-blue-950" : "border-white bg-transparent text-white"}`}
+              className={`flex size-9 shrink-0 items-center justify-center rounded-full border text-sm font-bold ${step.number === activeStep ? "border-blue-200 bg-blue-200 text-blue-950" : "border-white bg-transparent text-white"}`}
             >
               {step.number}
             </span>
