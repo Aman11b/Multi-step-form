@@ -26,7 +26,7 @@ describe("validatePersonalInfo", () => {
     });
   });
 
-  it("reject an invalid emaiul address", () => {
+  it("reject an invalid email address", () => {
     const data = {
       ...validData,
       email: "not-an-email",
