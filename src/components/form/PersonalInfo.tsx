@@ -1,11 +1,11 @@
 "use client";
 
+import { validatePersonalInfo } from "@/lib/personal-info-validation";
+import { PersonalInfoData, PersonalInfoError } from "@/types/personal-info";
+import type { ChangeEvent, SubmitEvent } from "react";
 import { useState } from "react";
-import type { SubmitEvent } from "react";
 import Button from "../ui/Button";
 import FormField from "../ui/FormField";
-import { PersonalInfoData, PersonalInfoError } from "@/types/personal-info";
-import { validatePersonalInfo } from "@/lib/personal-info-validation";
 
 export default function PersonalInfo() {
   const [formData, setFormData] = useState<PersonalInfoData>({
@@ -20,6 +20,19 @@ export default function PersonalInfo() {
 
     const validationError = validatePersonalInfo(formData);
     setError(validationError);
+  }
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    const fieldName = name as keyof PersonalInfoData;
+    setFormData((current) => ({
+      ...current,
+      [fieldName]: value,
+    }));
+    setError((current) => {
+      const updatedError = { ...current };
+      delete updatedError[fieldName];
+      return updatedError;
+    });
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -40,11 +53,7 @@ export default function PersonalInfo() {
             type: "text",
             placeholder: "e.g Stephen King",
             value: formData.name,
-            onChange: (event) =>
-              setFormData((current) => ({
-                ...current,
-                name: event.target.value,
-              })),
+            onChange: handleChange,
           }}
         />
         <FormField
@@ -56,11 +65,7 @@ export default function PersonalInfo() {
             name: "email",
             placeholder: "e.g StephanKing@lorem.com",
             value: formData.email,
-            onChange: (event) =>
-              setFormData((current) => ({
-                ...current,
-                email: event.target.value,
-              })),
+            onChange: handleChange,
           }}
         />
         <FormField
@@ -72,11 +77,7 @@ export default function PersonalInfo() {
             name: "phone",
             placeholder: "e.g +1 234 567 890",
             value: formData.phone,
-            onChange: (event) =>
-              setFormData((current) => ({
-                ...current,
-                phone: event.target.value,
-              })),
+            onChange: handleChange,
           }}
         />
         {/* Mentor takeaway: ...props forwards every remaining prop, including children. Explicitly rendering {children} is generally clearer when building reusable UI components. */}
