@@ -8,7 +8,7 @@ describe("validatePersonalInfo", () => {
     phone: "+91 9876543210",
   };
 
-  it("return no error for valid data", () => {
+  it("returns no errors for valid data", () => {
     expect(validatePersonalInfo(validData)).toEqual({});
   });
 
@@ -26,7 +26,7 @@ describe("validatePersonalInfo", () => {
     });
   });
 
-  it("reject an invalid email address", () => {
+  it("rejects an invalid email address", () => {
     const data = {
       ...validData,
       email: "not-an-email",
@@ -50,4 +50,22 @@ describe("validatePersonalInfo", () => {
       phone: "This field is required",
     });
   });
+
+  it.each(["+91 9876543210", "9876543210", "+1 (234) 567-8901"])(
+    "accepts a phone number with common formatting: %s",
+    (phone) => {
+      expect(
+        validatePersonalInfo({ ...validData, phone }).phone,
+      ).toBeUndefined();
+    },
+  );
+
+  it.each(["123", "abcdefghij", "+-()", "123456789012345678901"])(
+    "rejects an invalid phone number: %s",
+    (phone) => {
+      expect(validatePersonalInfo({ ...validData, phone }).phone).toBe(
+        "Enter a valid phone number",
+      );
+    },
+  );
 });

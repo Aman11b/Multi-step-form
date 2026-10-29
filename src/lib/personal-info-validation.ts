@@ -5,7 +5,7 @@ import type {
 
 const REQUIRED_MESSAGE = "This field is required";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const PHONE_PATTERN = /^\d{10}$/;
+const PHONE_PATTERN = /^\+?[0-9\s()-]{10,20}$/;
 
 export function validatePersonalInfo(
   formData: PersonalInfoData,
@@ -17,15 +17,15 @@ export function validatePersonalInfo(
   }
 
   if (!formData.email.trim()) {
-    errors.email = REQUIRED_MESSAGE
+    errors.email = REQUIRED_MESSAGE;
   } else if (!EMAIL_PATTERN.test(formData.email.trim())) {
     errors.email = "Enter a valid email address";
   }
 
   if (!formData.phone.trim()) {
     errors.phone = "This field is required";
-  }else if (!PHONE_PATTERN.test(formData.phone.trim())){
-    errors.phone = "Enter a valid 10-digit phone number";
+  } else if (!PHONE_PATTERN.test(formData.phone.trim())) {
+    errors.phone = "Enter a valid phone number";
   }
 
   return errors;
