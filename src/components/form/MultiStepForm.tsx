@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ADD_ONS_STEP,
   COMPLETE_STEP,
   FINAL_STEP,
   FIRST_STEP,
@@ -16,6 +17,8 @@ import AddOns from "./AddOns";
 import PersonalInfo from "./PersonalInfo";
 import SelectPlan from "./SelectPlan";
 import StepForm from "./StepForm";
+import Summary from "./Summary";
+import Image from "next/image";
 
 export default function MultiStepForm() {
   const [currentStep, setCurrentStep] = useState<number>(FIRST_STEP);
@@ -74,19 +77,8 @@ export default function MultiStepForm() {
           onBack={goBack}
         />
       )}
-      {/* {currentStep > SELECT_PLAN_STEP && currentStep <= FINAL_STEP && (
-        <StepForm
-          step={currentStep as StepNumber}
-          onSubmit={(event) => {
-            event.preventDefault();
-            goNext();
-          }}
-          onBack={goBack}
-        >
-          <p>Step {currentStep} content goes here</p>
-        </StepForm>
-      )} */}
-      {currentStep === 3 && (
+
+      {currentStep === ADD_ONS_STEP && (
         <AddOns
           selectedAddOns={selectedAddOns}
           interval={billingInterval}
@@ -96,17 +88,31 @@ export default function MultiStepForm() {
         />
       )}
       {currentStep === FINAL_STEP && (
-        <StepForm
-          step={FINAL_STEP}
-          onSubmit={(event) => {
-            event.preventDefault();
-            goNext();
-          }}
-        >
-          <p>Summary content goes here</p>
-        </StepForm>
+        <Summary
+          selectedPlan={selectedPlan}
+          selectedAddOns={selectedAddOns}
+          interval={billingInterval}
+          onChangePlan={() => setCurrentStep(SELECT_PLAN_STEP)}
+          onSubmit={goNext}
+          onBack={goBack}
+        />
       )}
-      {currentStep === COMPLETE_STEP && <p>Thank You !</p>}
+      {currentStep === COMPLETE_STEP && (
+        <div className="flex flex-col justify-center items-center min-h-100 text-center">
+          <Image
+            src="/images/icon-thank-you.svg"
+            alt=""
+            width={56}
+            height={56}
+          />
+          <h2 className="mt-6 font-bold text-blue-950 text-2xl">Thank You!</h2>
+          <p className="mt-3 max-w-md text-grey-500">
+            Thanks for confirming your subscription! We hope you have fun using
+            our platform. If you ever need support, please feel free to email
+            us.
+          </p>
+        </div>
+      )}
     </FormLayout>
   );
 }

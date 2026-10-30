@@ -9,6 +9,7 @@ export type StepNumber = (typeof STEPS)[number]["number"];
 
 export const FIRST_STEP = 1 as const;
 export const SELECT_PLAN_STEP = 2 as const;
+export const ADD_ONS_STEP = 3 as const;
 export const FINAL_STEP = STEPS.length;
 export const COMPLETE_STEP = FINAL_STEP + 1;
 
