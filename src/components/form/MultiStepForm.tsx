@@ -5,16 +5,17 @@ import {
   FINAL_STEP,
   FIRST_STEP,
   SELECT_PLAN_STEP,
-  type StepNumber,
 } from "@/lib/steps";
 
+import type { AddOnId } from "@/types/add-on";
 import type { PersonalInfoData } from "@/types/personal-info";
+import type { BillingInterval, PlanId } from "@/types/plan";
 import { useState } from "react";
 import FormLayout from "../layout/FormLayout";
+import AddOns from "./AddOns";
 import PersonalInfo from "./PersonalInfo";
-import StepForm from "./StepForm";
-import type { BillingInterval, PlanId } from "@/types/plan";
 import SelectPlan from "./SelectPlan";
+import StepForm from "./StepForm";
 
 export default function MultiStepForm() {
   const [currentStep, setCurrentStep] = useState<number>(FIRST_STEP);
@@ -26,6 +27,8 @@ export default function MultiStepForm() {
   });
 
   const [selectedPlan, setSelectedPlan] = useState<PlanId | null>(null);
+
+  const [selectedAddOns, setSelectedAddOns] = useState<AddOnId[]>([]);
 
   const [billingInterval, setBillingInterval] =
     useState<BillingInterval>("monthly");
@@ -41,6 +44,16 @@ export default function MultiStepForm() {
   function handlePersonalInfoSubmit(data: PersonalInfoData) {
     setPersonalInfo(data);
     goNext();
+  }
+
+  function handleAddOnToggle(id: AddOnId, selected: boolean) {
+    setSelectedAddOns((current) => {
+      if (selected) {
+        return current.includes(id) ? current : [...current, id];
+      }
+
+      return current.filter((addOnId) => addOnId !== id);
+    });
   }
 
   return (
@@ -61,7 +74,7 @@ export default function MultiStepForm() {
           onBack={goBack}
         />
       )}
-      {currentStep > SELECT_PLAN_STEP && currentStep <= FINAL_STEP && (
+      {/* {currentStep > SELECT_PLAN_STEP && currentStep <= FINAL_STEP && (
         <StepForm
           step={currentStep as StepNumber}
           onSubmit={(event) => {
@@ -71,6 +84,26 @@ export default function MultiStepForm() {
           onBack={goBack}
         >
           <p>Step {currentStep} content goes here</p>
+        </StepForm>
+      )} */}
+      {currentStep === 3 && (
+        <AddOns
+          selectedAddOns={selectedAddOns}
+          interval={billingInterval}
+          onAddOnToggle={handleAddOnToggle}
+          onSubmit={goNext}
+          onBack={goBack}
+        />
+      )}
+      {currentStep === FINAL_STEP && (
+        <StepForm
+          step={FINAL_STEP}
+          onSubmit={(event) => {
+            event.preventDefault();
+            goNext();
+          }}
+        >
+          <p>Summary content goes here</p>
         </StepForm>
       )}
       {currentStep === COMPLETE_STEP && <p>Thank You !</p>}
